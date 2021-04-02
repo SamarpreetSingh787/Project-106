@@ -27,7 +27,33 @@ function modelLoaded() {
 
 function speak() {
     var synth = window.speechSynthesis;
-    speak_data1 = "The first prediction is " + prediction_1;
-    var utterThis = new SpeechSynthesisUtterance(speak_data1);
+    speak_data = "The prediction is " + prediction;
+    var utterThis = new SpeechSynthesisUtterance(speak_data);
+    utterThis.rate = 0.5;
     synth.speak(utterThis);
+}
+
+function check() {
+    img = document.getElementById("captured_img");
+    classifier.classify(img , got_Result);
+}
+
+function got_Result(error , results) {
+    if (error) {
+        console.error(error);
+    } else {
+        console.log(results);
+        document.getElementById("result_gesture_name").innerHTML = results[0].label;
+        prediction = results[0].label;
+        speak();
+        if (results[0].label == "Amazing") {
+            document.getElementById("update_gesture").innerHTML = "👌";
+        }
+        if (results[0].label == "Best") {
+            document.getElementById("update_gesture").innerHTML = "👍";
+        }
+        if (results[0].label == "Victory") {
+            document.getElementById("update_gesture").innerHTML = "✌";
+        }
+    }
 }
